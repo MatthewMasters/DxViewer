@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DxViewer</title>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="css/font-awesome.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="subresource" href="css/light.css" />
+  <link rel="subresource" href="css/dark.css" />
+</head>
+<body>
+
+<!-- NGL -->
+<script src="js/ngl.js"></script>
+
+<!-- UI -->
+<script src="js/lib/signals.min.js"></script>
+<script src="js/lib/tether.min.js"></script>
+<script src="js/lib/colorpicker.min.js"></script>
+<script src="js/ui/ui.js"></script>
+<script src="js/ui/ui.extra.js"></script>
+<script src="js/ui/ui.ngl.js"></script>
+<script src="js/gui.js"></script>
+
+<script>
+  NGL.cssDirectory = "css/"
+  
+  NGL.DatasourceRegistry.add("data", new NGL.StaticDatasource("./data/"))
+
+  var stage
+  document.addEventListener("DOMContentLoaded", function () {
+    stage = new NGL.Stage()
+    NGL.StageWidget(stage)
+
+    var load = NGL.getQuery("load")
+    if (load) stage.loadFile(load, {defaultRepresentation: true})
+
+    var script = NGL.getQuery("script")
+    if (script) stage.loadScript("./scripts/" + script + ".js")
+
+    var struc = NGL.getQuery("struc")
+    var traj = NGL.getQuery("traj")
+    if (struc) {
+      stage.loadFile(struc, {
+        defaultRepresentation: true
+      }).then(function(o) {
+        if (traj) o.addTrajectory(traj)
+      })
+    }
+
+  })
+</script>
+
+</body>
+</html>
